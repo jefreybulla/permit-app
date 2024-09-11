@@ -2,17 +2,18 @@
 import styles from './app.module.scss'
 import { useEffect, useState } from 'react'
 import { Question, QuestionType } from './shared-types'
-import { mockApiGet } from './mock-server/mock-api'
+import { mockApiGet, mockApiPost } from './mock-server/mock-api'
 
 export function App() {
 
-  const [question, setQuestion] = useState<Question>();
-  const [ fetchStatus, setFetchStatus ] = useState('loading');
-  const [ userAnswer, setUserAnswers ] = useState<string[]>([]);
-  const [ currentQuestionId, setCurrentQuestionId ] = useState<number>(1);
+  const [question, setQuestion] = useState<Question>()
+  const [ fetchStatus, setFetchStatus ] = useState('loading')
+  const [ userAnswer, setUserAnswers ] = useState<string[]>([])
+  const [ currentQuestionId, setCurrentQuestionId ] = useState<number>(1)
+  const [ showWarning, setShowWarning ] = useState(false)
 
   const fetchQuestion = async (questionNumber: number) => {
-    const response = await mockApiGet({  questionNumber });
+    const response = await mockApiGet(questionNumber);
     console.log(response)
     setQuestion(response)
     setFetchStatus('ready')
@@ -22,66 +23,69 @@ export function App() {
     fetchQuestion(currentQuestionId);
   }, [currentQuestionId]);
 
-  const handleSubmit = async({lastQuestion = false}) => {
-    /*
-    const response = await fetch(`${apiRoot}/responses`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        question_id: question?.currentQuestion,
-        response: userAnswer,
-      })
-    });
-    const data = await response.json();
-    console.log(data);
-    // response should contain the next questionId
-    */
-
-    //console.log('last question', lastQuestion);
+  const handleSubmit = async( event: React.FormEvent, lastQuestion : boolean | undefined ) => {
+    event.preventDefault()
+    if(userAnswer.length === 0){
+      setShowWarning(true)
+      return
+    }
+    const response = await mockApiPost(currentQuestionId, userAnswer)
+    setUserAnswers([])
     if (lastQuestion) {
-      console.log('last question');
-      setFetchStatus('end');
+      console.log('last question')
+      setFetchStatus('end')
     }
     else{
-      console.log('next question');
-      setCurrentQuestionId(currentQuestionId + 1);
+      console.log('next question')
+      setCurrentQuestionId(response.nextQuestionId)
     }
-
   }
 
-  const handleChange = (e: any) => {
-    setUserAnswers([e.target.value]);
-    // WIP for multiple_choice_multiple
-    //setUserAnswers([...userAnswer, e.target.value]);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // handle multiple choice with multiple answers
+    if(question?.questionType === QuestionType.multipleChoiceMultipleAnswers){
+      const answerClone = structuredClone(userAnswer)
+      const index = answerClone.indexOf(event.target.value);
+      if (index > -1) { // only splice when item is already included
+        answerClone.splice(index, 1)
+        setUserAnswers( answerClone )
+        return
+      }
+      else{
+        setUserAnswers( [ ...answerClone, event.target.value ] )
+        return
+      }
+    }
+    setUserAnswers( [ event.target.value ] )
   }
 
   const renderInputs = () => {
-    if (question?.type === QuestionType.multipleChoiceUniqueAnswer) {
-      return question.options.map((option, index) => {
-        return (
-          <div key={index}>
-            <input type="radio" name="option" value={option} onChange = {(e) => handleChange(e)}/>
-            <label>{option}</label>
-          </div>
-        )
-      })
-    }
-    if (question?.type === QuestionType.multipleChoiceMultipleAnswers) {
-      return question.options.map((option, index) => {
-        return (
-          <div key={index}>
-            <input type="checkbox" name="option" value={option} onChange = {(e) => handleChange(e)}/>
-            <label>{option}</label>
-          </div>
-        )
-      })
-    }
-    if (question?.type === 'text') {
+    if (question?.questionType === QuestionType.text) {
       return (
-        <input type="text" onChange = {(e) => handleChange(e)} />
-      )}
+        <input key={question.questionId} type="text" onChange = {(event) => handleChange(event)} required/>
+    )}
+    if(question?.options){
+      if (question?.questionType === QuestionType.multipleChoiceUniqueAnswer) {
+        return question.options.map((option, index) => {
+          return (
+            <div key={index}>
+              <input key={question.questionId} type="radio" name="option" value={option} onChange = {(event) => handleChange(event)} required/>
+              <label>{option}</label>
+            </div>
+          )
+        })
+      }
+      if (question?.questionType === QuestionType.multipleChoiceMultipleAnswers) {
+        return question.options.map((option, index) => {
+          return (
+            <div key={index}>
+              <input key={question.questionId} type="checkbox" name="option" value={option} onChange = {(event) => handleChange(event)}/>
+              <label>{option}</label>
+            </div>
+          )
+        })
+      }
+    }
   }
 
   if (fetchStatus === 'loading') {
@@ -94,18 +98,20 @@ export function App() {
 
   return (
     <div>
-        <h1 className={styles.title}>{question?.title}</h1>
+      <form onSubmit={(event) => handleSubmit(event, question?.lastQuestion )}>
         <p>{question?.content}</p>
+        {showWarning && <p className={styles.alert}>To procced enter your answer below</p>}
         { renderInputs() } 
         { question?.lastQuestion ?
-          <button onClick={() => handleSubmit({lastQuestion: true})}>
+          <button type='submit'>
             Submit
           </button>
           : 
-          <button onClick={() => handleSubmit({lastQuestion: false})}>
+          <button type='submit'>
           Next
           </button>
         }
+      </form>
     </div>
   );
 }

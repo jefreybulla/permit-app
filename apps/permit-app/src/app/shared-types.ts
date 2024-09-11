@@ -1,9 +1,9 @@
 export type Question = {
     title: string
     content: string
-    options: string[]
-    type: QuestionType
-    currentQuestionId: number
+    options?: string[]
+    questionType: QuestionType
+    questionId: number
     lastQuestion: boolean
 }
 

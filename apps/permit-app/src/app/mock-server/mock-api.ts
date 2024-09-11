@@ -1,19 +1,25 @@
-import { Question, QuestionType } from '../shared-types';
+import { Question } from '../shared-types'
+import mockResponse from './mockResponse'
 
-const mockResponse : Question = {
-    title: 'Question 1',
-    content: 'What is the capital of France?',
-    options: ['Paris', 'London', 'Berlin', 'Madrid'],
-    type: QuestionType.multipleChoiceUniqueAnswer,
-    currentQuestionId: 1,
-    lastQuestion: false
+type MockApiPostResponse = {
+    nextQuestionId: number
 }
 
-type mockApiParams = {
-    questionNumber: number
+export async function mockApiGet(questionNumber: number): Promise<Question> {
+    console.log('mockApiGet', questionNumber)
+    const response = mockResponse.filter(question => question.questionId == questionNumber)[0]
+    return response
 }
 
-export async function mockApiGet(mockApiParams: mockApiParams): Promise<Question> {
-    console.log('mockApiParams', mockApiParams)
-    return mockResponse
+const userResponses = new Map<number, string[]>() 
+
+export async function mockApiPost(questionNumber: number, userAnswer: string[]): Promise<MockApiPostResponse> {
+    //console.log('userAnswer ->')
+    //console.log(userAnswer)
+    userResponses.set(questionNumber, userAnswer)
+    console.log('userResponses ->')
+    console.log(userResponses)
+    return {
+        nextQuestionId: questionNumber + 1
+    }
 }
