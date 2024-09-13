@@ -9,21 +9,21 @@ const mockResponse : Question[] = [
         questionId: 1,
         title: 'Question 2',
         content: 'What residential work are you doing?',
-        questionType: QuestionType.multipleChoiceUniqueAnswer,
+        questionType: QuestionType.MULTIPLE_CHOICE_UNIQUE_ANSWER,
         options: ['Interior work', 'Exterior work'],
     },
     {
         questionId: 2,
         title: 'Question 2',
         content: 'What interior work are you doing?',
-        questionType: QuestionType.multipleChoiceMultipleAnswers,
+        questionType: QuestionType.MULTIPLE_CHOICE_MULTIPLE_ANSWERS,
         options: ['Bathroom remodel', 'New bathroom', 'New laundry room', 'Other']
     },
     {
         questionId: 3,
         title: 'Question 3',
         content: 'What exterior work are you doing?',
-        questionType: QuestionType.multipleChoiceMultipleAnswers,
+        questionType: QuestionType.MULTIPLE_CHOICE_MULTIPLE_ANSWERS,
         options: ['Garage door replacement', 'Exterior doors', 'Fencing', 'Other']
     },
 ]
