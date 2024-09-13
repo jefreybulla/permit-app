@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import styles from './app.module.scss'
 import { useEffect, useState } from 'react'
-import { Question, QuestionType, FetchStatus } from './shared-types'
+import { Question, QuestionType, FetchStatus, Outcome } from './shared-types'
 import { mockApiGet, mockApiPost } from './mock-server/mock-api'
 
 export function App() {
@@ -41,7 +41,6 @@ export function App() {
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // handle multiple choice with multiple answers
     if(question?.questionType === QuestionType.MULTIPLE_CHOICE_MULTIPLE_ANSWERS){
       const answerClone = structuredClone(userAnswer)
       const index = answerClone.indexOf(event.target.value)
@@ -61,15 +60,28 @@ export function App() {
   const renderInputs = () => {
     if (question?.questionType === QuestionType.TEXT) {
       return (
-        <input key={question.questionId} type="text" onChange = {(event) => handleChange(event)} required/>
+        <input 
+          key={question.questionId}
+          type="text"
+          onChange = {(event) => handleChange(event)}
+          required
+        />
     )}
     if(question?.options){
       if (question?.questionType === QuestionType.MULTIPLE_CHOICE_UNIQUE_ANSWER) {
         return question.options.map((option, index) => {
           return (
             <div key={index}>
-              <input key={question.questionId} type="radio" name="option" value={option} onChange = {(event) => handleChange(event)} required/>
-              <label>{option}</label>
+              <input 
+                key={question.questionId}
+                type="radio"
+                name="option"
+                value={option}
+                onChange = {(event) => handleChange(event)} 
+                className = {styles.radioInput}
+                required
+              />
+              <label className={styles.label}>{option}</label>
             </div>
           )
         })
@@ -78,8 +90,15 @@ export function App() {
         return question.options.map((option, index) => {
           return (
             <div key={index}>
-              <input key={question.questionId} type="checkbox" name="option" value={option} onChange = {(event) => handleChange(event)}/>
-              <label>{option}</label>
+              <input 
+                key={question.questionId}
+                type="checkbox"
+                name="option"
+                value={option}
+                onChange = {(event) => handleChange(event)}
+                className = {styles.radioInput}
+              />
+              <label className={styles.label}>{option}</label>
             </div>
           )
         })
@@ -98,7 +117,48 @@ export function App() {
   }
 
   if (fetchStatus === FetchStatus.OUTCOME) {
-    return <div>{ outcome }</div>
+    if (outcome === Outcome.IHR) {
+      return(
+        <div className={styles.needPermit}>
+          <p>
+            <span className={styles.checkIcon}>&#x2705;</span>
+            <span className={styles.outcomeTitle}>In-House Review Process</span>
+          </p>
+          <ul>
+            <li>A building permit is required.</li>
+            <li>Include plan sets.</li>
+            <li>Submit application for in-house review.</li>
+          </ul>
+        </div>
+      )
+    }
+    if (outcome === Outcome.OTC) {
+      return(
+        <div className={styles.needPermit}>
+          <p>
+            <span className={styles.checkIcon}>&#x2705;</span>
+            <span className={styles.outcomeTitle}>Over-the-Counter Submission Process</span>
+          </p>
+          <ul>
+            <li>A building permit is required.</li>
+            <li>Submit application for OTC review.</li>
+          </ul>
+        </div>
+      )
+    }
+    if (outcome === Outcome.NPR) {
+      return(
+        <div className={styles.needNoPermit}>
+          <p>
+            <span className={styles.checkIcon}>&#x274C;</span>
+            <span className={styles.outcomeTitle}>No Permit</span>
+          </p>
+          <ul>
+            <li>Nothing is required! You’re set to build.</li>
+          </ul>
+        </div>
+      )
+    }
   }
 
   return (
@@ -107,7 +167,7 @@ export function App() {
         <p>{question?.content}</p>
         { renderWarning() }
         { renderInputs() } 
-        <button type='submit'>
+        <button type='submit' className={styles.nextButton}>
           Next
         </button>
       </form>
