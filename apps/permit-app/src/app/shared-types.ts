@@ -1,5 +1,4 @@
 export type Question = {
-    title: string
     content: string
     options?: string[]
     questionType: QuestionType

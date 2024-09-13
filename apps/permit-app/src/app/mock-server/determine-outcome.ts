@@ -28,9 +28,9 @@ export default function determineOutcome(allUserAnswers : AllUserAnswers){
     }
 
     /* 
-    the current use case does not require the logic below
-    but if the business/product requirements change, the following logic can be useful
-    for other use cases such as doing interior work and exterior work at the same time
+    Note that only one outcome can be returned. 
+    The following conditional logic represents the priority of the outcomes.
+    If needed, the current implementation support cases such as doing interior work and exterior work at the same time.
     */
     if(outcomeArray.includes(Outcome.IHR)){
         return Outcome.IHR
