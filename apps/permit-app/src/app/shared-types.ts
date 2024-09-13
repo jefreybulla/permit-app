@@ -4,7 +4,6 @@ export type Question = {
     options?: string[]
     questionType: QuestionType
     questionId: number
-    lastQuestion: boolean
 }
 
 export enum QuestionType {

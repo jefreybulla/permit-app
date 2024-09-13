@@ -23,7 +23,7 @@ export function App() {
     fetchQuestion(currentQuestionId);
   }, [currentQuestionId]);
 
-  const handleSubmit = async( event: React.FormEvent, lastQuestion : boolean | undefined ) => {
+  const handleSubmit = async( event: React.FormEvent ) => {
     event.preventDefault()
     if(userAnswer.length === 0){
       setShowWarning(true)
@@ -31,12 +31,10 @@ export function App() {
     }
     const response = await mockApiPost(currentQuestionId, userAnswer)
     setUserAnswers([])
-    if (lastQuestion) {
-      console.log('last question')
+    if (response.nextQuestionId === -1) {
       setFetchStatus('end')
     }
     else{
-      console.log('next question')
       setCurrentQuestionId(response.nextQuestionId)
     }
   }
@@ -98,19 +96,13 @@ export function App() {
 
   return (
     <div>
-      <form onSubmit={(event) => handleSubmit(event, question?.lastQuestion )}>
+      <form onSubmit={(event) => handleSubmit(event )}>
         <p>{question?.content}</p>
-        {showWarning && <p className={styles.alert}>To procced enter your answer below</p>}
+        {showWarning && <p className={styles.alert}>To procceed enter your answer below</p>}
         { renderInputs() } 
-        { question?.lastQuestion ?
-          <button type='submit'>
-            Submit
-          </button>
-          : 
-          <button type='submit'>
+        <button type='submit'>
           Next
-          </button>
-        }
+        </button>
       </form>
     </div>
   );
