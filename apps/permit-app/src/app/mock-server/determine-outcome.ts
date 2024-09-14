@@ -1,28 +1,27 @@
 import { AllUserAnswers, Outcome } from '../shared-types'
 
 export default function determineOutcome(allUserAnswers : AllUserAnswers){
+    /*
+    Use a condition in allUserAmswers[qiestionId] to determine the outcome
+    Example: to add a new outcome based on the answer to question 4, add allUserAnswers[4] to the conditional logic.
+    */
     const outcomeArray = []
     if(allUserAnswers[2]){
         if(allUserAnswers[2].includes('Bathroom remodel') && allUserAnswers[2].length == 1){
-            //return 'Over-the-Counter Submission Process'
             outcomeArray.push(Outcome.OTC)
         }
         else{
-            //return 'In-House Review Process'
             outcomeArray.push(Outcome.IHR)
         }
     }
     if(allUserAnswers[3]){
         if(allUserAnswers[3].includes('Other')){
-            //return 'In-House Review Process'
             outcomeArray.push(Outcome.IHR)
         }
         else if(allUserAnswers[3].includes('Garage door replacement') && allUserAnswers[3].includes('Exterior doors')){
-            //return 'Over-the-Counter Submission Process'
             outcomeArray.push(Outcome.OTC)
         }
         else{
-            //return 'No permit required'
             outcomeArray.push(Outcome.NPR)
         }
     }

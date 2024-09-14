@@ -1,82 +1,60 @@
-# PermitApp
+# Permit-app
+A contractor has a residential job in San Francisco. By answering the questionnaire below, PermitFlow can help the contractor determine if a permit is needed and the application process. 
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+This implementation is an front-end only MVP built with extensibility in mind. 
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+## Serve the build (easiest way to run the project)
+I've included a build to the repo so you can easily run the app 
+```
+cd dist/apps/permit-app
+npx lite-server
+```
+In your browser navigate to http://localhost:3000/ to use the app. 
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/tutorials/react-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+## Key files
+- `mock-questions`: questions storage.
+- `next-question.js`: function that determines what question comes next.
+- `determine-outcome.ts`: function to determine the outcome (requirements) logic based on user answers.
+- `mock-api.ts`: function to fetch questions and save user answers.
+- `app.tsx`: Main React component that renders the UI.
 
-## Finish your CI setup
+## MVP Extensibility
+- Add questions to the questionaire:
+	- Add as many quesiton as you need by adding more objects to `mock-questions,ts`.
+    - You can also add a question of type Text to include questions such as 'What's your name?'
+- Add/Update question transition logic:
+    - Add any custom transition logic for new or existing questions by adding new cases to `next-question.ts`.
+- Add/update outcome (requirements) logic:
+    - Add any custom outcome logic for new or existing questions by adding new conditionals to `determine-outcome.ts`
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/2MtWeC3Tbu)
+## Setup for development
+### Requirements
+- Install [nvm](https://github.com/nvm-sh/nvm)
+- Install Node version specified in `.nvmrc` by running `nvm install`
+- Install dependencies with `npm install`
 
-
-## Run tasks
-
-To run the dev server for your app, use:
-
-```sh
+### Start the application
+Run the app with
+```
 npx nx serve permit-app
 ```
+In your browser navigate to http://localhost:4200/
 
-To create a production bundle:
-
-```sh
-npx nx build permit-app
+### Run tests
+```
+npx nx test permit-app
 ```
 
-To see all available targets to run for a project, run:
+### Build for production
+Run `npx nx build permit-app` to build the application. The build artifacts are stored in the output directory (`dist/`), ready to be deployed.
 
-```sh
-npx nx show project permit-app
+### Regarding the initial setup
+This project was initialized using the following [Nx](https://nx.dev) command
 ```
-        
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
-
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-npx nx g @nx/react:app demo
+npx create-nx-workspace@latest permit-app --preset=react-monorepo
 ```
-
-To generate a new library, use:
-
-```sh
-npx nx g @nx/react:lib mylib
+If you need to add a Express backend as an additional app to this monorepo you can use the following commands
 ```
-
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
-
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/getting-started/tutorials/react-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+nx add @nx/express
+nx g @nx/express:app permit-api --directory=apps/permit-api
+```

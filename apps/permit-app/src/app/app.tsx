@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import styles from './app.module.scss'
 import { useEffect, useState } from 'react'
 import { Question, QuestionType, FetchStatus, Outcome } from './shared-types'

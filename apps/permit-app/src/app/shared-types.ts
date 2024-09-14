@@ -1,7 +1,7 @@
 export type Question = {
     content: string
-    options?: string[]
     questionType: QuestionType
+    options?: string[]
     questionId: number
 }
 

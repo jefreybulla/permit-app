@@ -1,7 +1,10 @@
 export default function nextQuestion(questionId : number, userAnswer : string[]){
     switch(questionId){
-        // Use 'case <questionId>' to define the question transition logic.
-        // Return -1 if there are no more questions.
+        /* 
+        Each 'case <questionId>' defines the question transition logic.
+        Return the desired next questionId based on business logic.
+        Return -1 if there are no more questions.
+        */
         case 1:
             if(userAnswer && userAnswer.includes('Interior work')){
                 return 2
