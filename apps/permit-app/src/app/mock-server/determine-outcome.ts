@@ -2,7 +2,7 @@ import { AllUserAnswers, Outcome } from '../shared-types'
 
 export default function determineOutcome(allUserAnswers : AllUserAnswers){
     /*
-    Use a condition in allUserAmswers[qiestionId] to determine the outcome
+    Use a condition in allUserAmswers[questionId] to determine the outcome
     Example: to add a new outcome based on the answer to question 4, add allUserAnswers[4] to the conditional logic.
     */
     const outcomeArray = []

@@ -3,6 +3,9 @@ A contractor has a residential job in San Francisco. By answering the questionna
 
 This implementation is an front-end only MVP built with extensibility in mind. 
 
+## Codebase intro video
+https://www.loom.com/share/74b14612779747bab14c193b05c54f4d?sid=a8fe06da-4d31-4e19-88ac-eb9e8f6bd3ce
+
 ## Serve the build (easiest way to run the project)
 I've included a build to the repo so you can easily run the app 
 ```
@@ -12,8 +15,8 @@ npx lite-server
 In your browser navigate to http://localhost:3000/ to use the app. 
 
 ## Key files
-- `mock-questions`: questions storage.
-- `next-question.js`: function that determines what question comes next.
+- `mock-questions.ts`: questions storage.
+- `next-question.ts`: function that determines what question comes next.
 - `determine-outcome.ts`: function to determine the outcome (requirements) logic based on user answers.
 - `mock-api.ts`: function to fetch questions and save user answers.
 - `app.tsx`: Main React component that renders the UI.
@@ -27,6 +30,14 @@ In your browser navigate to http://localhost:3000/ to use the app.
 - Add/update outcome (requirements) logic:
     - Add any custom outcome logic for new or existing questions by adding new conditionals to `determine-outcome.ts`
 
+## Ways to improve app/codebase if given more time
+- Add/improve error handling.
+- Add tests.
+- Handle logic currently in folder `mock-server` in a backend.
+- Add contact info questions (what's your name, email, etc).
+- Persist user outcomes and user's contact info in a database.
+- Create UI, APIs and db tables that allows a person/system to create any custom question/outcome logic.
+
 ## Setup for development
 ### Requirements
 - Install [nvm](https://github.com/nvm-sh/nvm)
@@ -39,11 +50,6 @@ Run the app with
 npx nx serve permit-app
 ```
 In your browser navigate to http://localhost:4200/
-
-### Run tests
-```
-npx nx test permit-app
-```
 
 ### Build for production
 Run `npx nx build permit-app` to build the application. The build artifacts are stored in the output directory (`dist/`), ready to be deployed.
