@@ -41,3 +41,32 @@ export default function determineOutcome(allUserAnswers : AllUserAnswers){
         return Outcome.NPR
     }
 }
+
+/* APIs to support a Post-MVP form builder
+
+// simple
+POST outcome_conditions/:question_id
+body {
+    conditional: "IF_ANSWER_INCLUDES" <enum>
+    condition: "Bathroom remodel" <string>
+    outcome: "NPR"  <enum>
+} 
+
+// extensible
+POST outcome_conditions/:question_id
+body {
+    conditionArray: [
+        {   
+            conditional: "IF_ANSWER_INCLUDES" <enum>
+            condition: "Garage door replacement" <string>
+        },
+        {   
+            conditional: "IF_ANSWER_INCLUDES" <enum>
+            condition: "Exterior doors" <string>
+        },
+    ],
+    logicOperators? = ['AND']  
+    outcome: "NPR"  <enum>
+} 
+
+*/
