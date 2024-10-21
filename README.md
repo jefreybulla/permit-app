@@ -1,5 +1,5 @@
-# Permit-app
-A contractor has a residential job in San Francisco. By answering a questionnaire, Permit-app can help the contractor determine if a permit is needed and the application process.
+# Permit-app - Coding exercise
+A contractor has a residential job. By answering a questionnaire, Permit-app can help the contractor determine if a permit is needed and the application process. See the full challenge description [here](take-home.md)
 
 This implementation is an front-end only MVP built with extensibility in mind. 
 

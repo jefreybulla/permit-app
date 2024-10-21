@@ -2,7 +2,7 @@
 
 A contractor has a residential job in San Francisco. By answering the questionnaire below, PermitFlow can help the contractor determine if a permit is needed and the application process. 
 
-Below is an example simplified residential workflow (adapted from [https://sfdbi.org/](https://www.google.com/url?q=https://sfdbi.org/&sa=D&source=editors&ust=1709576701929470&usg=AOvVaw13boQ0-KULK1nTjVfJ75ZK)).
+Below is an example simplified residential workflow. 
 
 ## Questionnaire
 
